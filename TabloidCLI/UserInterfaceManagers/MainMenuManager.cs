@@ -9,6 +9,24 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
+            
+
+            string[] art = new string[]
+            {
+            "\t\t\t\t╔══════════════════════════════════════════╗",
+            "\t\t\t\t║                                          ║",
+            "\t\t\t\t║        ┌────────────────────────┐        ║",
+            "\t\t\t\t║        │ Welcome to Tabloid CLI │        ║",
+            "\t\t\t\t║        └────────────────────────┘        ║",
+            "\t\t\t\t║                                          ║",
+            "\t\t\t\t╚══════════════════════════════════════════╝"
+            };
+
+            foreach (string line in art)
+            {
+                Console.WriteLine(line);
+            }
+
             Console.WriteLine("Main Menu");
 
             Console.WriteLine(" 1) Journal Management");
