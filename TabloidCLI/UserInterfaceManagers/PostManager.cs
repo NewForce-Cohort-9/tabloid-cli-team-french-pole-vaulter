@@ -107,31 +107,32 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.Write("Publish Date (yyyy-mm-dd): ");
             post.PublishDateTime = DateTime.Parse(Console.ReadLine());
 
-            // Choose an Author from a list
-            Author selectedAuthor = ChooseAuthor();
-            if (selectedAuthor != null)
+           
+            Author selectedAuthor = null;
+            while (selectedAuthor == null)
             {
-                post.Author = selectedAuthor;
+                selectedAuthor = ChooseAuthor();
+                if (selectedAuthor == null)
+                {
+                    Console.WriteLine("An author must be selected. Please choose an author from the list. If none of these options are correct, please finish, delete your entry, and add the correct option to the relevant portion.");
+                }
             }
-            else
-            {
-                Console.WriteLine("Invalid selection. Post creation aborted.");
-                return;
-            }
+            post.Author = selectedAuthor;
 
-            // Choose a Blog from a list
-            Blog selectedBlog = ChooseBlog();
-            if (selectedBlog != null)
+            
+            Blog selectedBlog = null;
+            while (selectedBlog == null)
             {
-                post.Blog = selectedBlog;
+                selectedBlog = ChooseBlog();
+                if (selectedBlog == null)
+                {
+                    Console.WriteLine("A blog must be selected. Please choose a blog from the list. If none of these options are correct, please finish, delete your entry, and add the correct option to the relevant portion.");
+                }
             }
-            else
-            {
-                Console.WriteLine("Invalid selection. Post creation aborted.");
-                return;
-            }
+            post.Blog = selectedBlog;
 
             _postRepository.Insert(post);
+            Console.WriteLine("Post successfully added.");
         }
 
         private void Edit()
@@ -164,21 +165,24 @@ namespace TabloidCLI.UserInterfaceManagers
                 postToEdit.PublishDateTime = DateTime.Parse(publishDate);
             }
 
-            Console.Write("New Author Id (blank to leave unchanged): ");
-            string authorIdInput = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(authorIdInput))
+            
+            Console.WriteLine("Select a new Author (blank to leave unchanged):");
+            Author selectedAuthor = ChooseAuthor();
+            if (selectedAuthor != null)
             {
-                postToEdit.Author = new Author() { Id = int.Parse(authorIdInput) };
+                postToEdit.Author = selectedAuthor;
             }
 
-            Console.Write("New Blog Id (blank to leave unchanged): ");
-            string blogIdInput = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(blogIdInput))
+            
+            Console.WriteLine("Select a new Blog (blank to leave unchanged):");
+            Blog selectedBlog = ChooseBlog();
+            if (selectedBlog != null)
             {
-                postToEdit.Blog = new Blog() { Id = int.Parse(blogIdInput) };
+                postToEdit.Blog = selectedBlog;
             }
 
             _postRepository.Update(postToEdit);
+            Console.WriteLine("Post successfully updated.");
         }
 
         private void Remove()
@@ -187,6 +191,7 @@ namespace TabloidCLI.UserInterfaceManagers
             if (postToDelete != null)
             {
                 _postRepository.Delete(postToDelete.Id);
+                Console.WriteLine("Post successfully removed.");
             }
         }
 
@@ -201,6 +206,8 @@ namespace TabloidCLI.UserInterfaceManagers
             }
             Console.Write("> ");
             string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input)) return null;
 
             try
             {
@@ -225,6 +232,8 @@ namespace TabloidCLI.UserInterfaceManagers
             }
             Console.Write("> ");
             string input = Console.ReadLine();
+
+            if (string.IsNullOrWhiteSpace(input)) return null;
 
             try
             {
