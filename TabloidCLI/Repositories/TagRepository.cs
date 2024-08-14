@@ -97,14 +97,6 @@ namespace TabloidCLI
             }
         }
 
-
-
-
-
-
-
-
-      
         public void InsertAuthorTag(int tagId, int authorId)
         {
             using (SqlConnection conn = Connection)
