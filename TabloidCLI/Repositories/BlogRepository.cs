@@ -51,11 +51,15 @@ namespace TabloidCLI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT Id,
-                                               Title,
-                                               URL
-                                         FROM Blog
-                                         WHERE Id = @id";
+                    cmd.CommandText = @"SELECT b.Id AS BlogId,
+                                               b.Title,
+                                               b.URL,
+                                               t.Id AS TagId,
+                                               t.Name
+                                         FROM Blog b
+                                               LEFT JOIN BlogTag bt ON b.Id = bt.BlogId
+                                               LEFT JOIN Tag t ON t.Id = bt.TagId
+                                         WHERE b.Id = @id";
 
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -68,10 +72,19 @@ namespace TabloidCLI
                         {
                             blog = new Blog()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
                                 Title = reader.GetString(reader.GetOrdinal("Title")),
                                 Url = reader.GetString(reader.GetOrdinal("URL")),
                             };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
+                        {
+                            blog.Tags.Add(new Tag()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name")),
+                            });
                         }
 
                     }
@@ -136,7 +149,23 @@ namespace TabloidCLI
             }
         }
 
+        public void InsertTag(Blog blog, Tag tag)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO BlogTag (BlogId, TagId)
+                                        VALUES (@blogId, @tagId)";
 
+                    cmd.Parameters.AddWithValue("@blogId", blog.Id);
+                    cmd.Parameters.AddWithValue("@tagId", tag.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 
     }
 }

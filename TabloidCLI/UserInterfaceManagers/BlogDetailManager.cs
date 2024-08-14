@@ -1,3 +1,4 @@
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using TabloidCLI.Models;
@@ -9,12 +10,14 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private IUserInterfaceManager _parentUI;
         private BlogRepository _blogRepository;
+        private TagRepository _tagRepository;
         private int _blogId;
 
         public BlogDetailManager(IUserInterfaceManager parentUI, string connectionString, int blogId)
         {
             _parentUI = parentUI;
             _blogRepository = new BlogRepository(connectionString);
+            _tagRepository = new TagRepository(connectionString);
             _blogId = blogId;
         }
 
@@ -36,7 +39,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     View();
                     return this;
                 case "2":
-                    /*AddTag();*/
+                    AddTag();
                     return this;
                 case "3":
                     /*RemoveTag();*/
@@ -56,35 +59,44 @@ namespace TabloidCLI.UserInterfaceManagers
         {
             Blog blog = _blogRepository.Get(_blogId);
             Console.WriteLine($"\nTitle: {blog.Title}");
-            Console.WriteLine($"URL: {blog.Url}\n");
+            Console.WriteLine($"URL: {blog.Url}");
+            if (blog.Tags.IsNullOrEmpty())
+            {
+                Console.WriteLine("Tags: *none*\n");
+            }
+            else
+            {
+                Console.WriteLine($"Tags:\n {string.Join(", ", blog.Tags)}\n");
+            }
+        }
+
+        private void AddTag()
+        {
+            Blog blog = _blogRepository.Get(_blogId);
+
+            Console.WriteLine($"\nWhich tag would you like to add to {blog.Title}?\n");
+            List<Tag> tags = _tagRepository.GetAll();
+
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Tag tag = tags[i];
+                Console.WriteLine($" {i + 1}) {tag.Name}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                Tag tag = tags[choice - 1];
+                _blogRepository.InsertTag(blog, tag);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection. No tag added to this blog.");
+            }
         }
 
     }
 }
 
-
-/*
-Given the user is viewing the Blog Management menu
-When they select the option to view blog details
-Then they should be presented with a list of blogs to choose from
-
-Given the user chooses an blog
-When they enter the selection and hit enter
-Then the Blog Details menu should be displayed
-
-Given the user wishes to view the blog details
-When they select "View"
-Then the blog's title and url should be displayed
-
-The Blog Detail menu should have the following options:
-
-View
-
-Add Tag
-
-Remove Tag
-
-View Posts
-
-Return
- */
