@@ -41,12 +41,50 @@ namespace TabloidCLI
 
         public Tag Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = "SELECT Name FROM Tag WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    Tag tag = null;
+
+                    if (reader.Read())
+                    {
+                        tag = new Tag
+                        {
+                            Id = id,
+                            Name = reader.GetString(reader.GetOrdinal("Name"))
+                        };
+                    }
+
+                    reader.Close();
+
+                    return tag;
+                }
+            }
         }
+
 
         public void Insert(Tag tag)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Tag (Name) 
+                                         OUTPUT INSERTED.Id 
+                                         VALUES (@name)";
+                    cmd.Parameters.AddWithValue("@name", tag.Name);
+                    int id = (int)cmd.ExecuteScalar();
+
+                    tag.Id = id;
+                }
+            }
         }
 
         public void Update(Tag tag)
