@@ -1,4 +1,5 @@
 ﻿using System;
+using TabloidCLI.Models;
 
 namespace TabloidCLI.UserInterfaceManagers
 {
@@ -42,7 +43,7 @@ namespace TabloidCLI.UserInterfaceManagers
             switch (choice)
             {
                 case "1": return new JournalManager(this, CONNECTION_STRING);
-                case "2": throw new NotImplementedException();
+                case "2": return new BlogManager(this, CONNECTION_STRING);
                 case "3": return new AuthorManager(this, CONNECTION_STRING);
                 case "4": throw new NotImplementedException();
                 case "5": return new TagManager(this, CONNECTION_STRING);
