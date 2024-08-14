@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace TabloidCLI.Models
 {
@@ -12,5 +11,11 @@ namespace TabloidCLI.Models
         public DateTime PublishDateTime { get; set; }
         public Author Author { get; set; }
         public Blog Blog { get; set; }
+        public List<Tag> Tags { get; set; } = new List<Tag>();
+
+        public override string ToString()
+        {
+            return $"{Title} ({PublishDateTime.ToShortDateString()}) - {Url}";
+        }
     }
 }
