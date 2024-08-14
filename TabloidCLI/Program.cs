@@ -6,16 +6,6 @@ namespace TabloidCLI
     {
         static void Main(string[] args)
         {
-            //change background color. uncomment desired color
-
-            //Console.BackgroundColor = ConsoleColor.DarkGray;
-            //Console.BackgroundColor = ConsoleColor.DarkGreen;
-            //Console.BackgroundColor = ConsoleColor.DarkCyan;
-            //Console.BackgroundColor = ConsoleColor.DarkBlue;
-            //Console.BackgroundColor = ConsoleColor.DarkYellow;
-
-            //Console.Clear();
-
             // MainMenuManager implements the IUserInterfaceManager interface
             IUserInterfaceManager ui = new MainMenuManager();
             while (ui != null)
