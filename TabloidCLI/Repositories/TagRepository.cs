@@ -104,19 +104,18 @@ namespace TabloidCLI
 
 
 
-        WORKING ON WORKING ON WORKING ON
-        public void Insert(Author author)
+      
+        public void InsertAuthorTag(int tagId, int authorId)
         {
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Author (FirstName, LastName, Bio )
-                                                     VALUES (@firstName, @lastName, @bio)";
-                    cmd.Parameters.AddWithValue("@firstName", author.FirstName);
-                    cmd.Parameters.AddWithValue("@lastName", author.LastName);
-                    cmd.Parameters.AddWithValue("@bio", author.Bio);
+                    cmd.CommandText = @"INSERT INTO AuthorTag (AuthorId, TagId)
+                                                     VALUES (@authorId, @tagId)";
+                    cmd.Parameters.AddWithValue("@auhtorId", authorId);
+                    cmd.Parameters.AddWithValue("@tagId", tagId);
 
                     cmd.ExecuteNonQuery();
                 }
