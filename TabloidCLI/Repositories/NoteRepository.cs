@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,10 @@ namespace TabloidCLI.Repositories
         public NoteRepository(string connectionString) : base(connectionString) { }
         public List<Note> GetAll()
         {
-            return null;
+            using (SqlConnection conn = Connection)
+            {
+
+            }
         }
 
         public Note Get(int id)
