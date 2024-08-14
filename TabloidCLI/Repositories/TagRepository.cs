@@ -158,5 +158,22 @@ namespace TabloidCLI
                 }
             }
         }
+
+        public void InsertAuthorTag(int tagId, int authorId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO AuthorTag (AuthorId, TagId)
+                                                     VALUES (@authorId, @tagId)";
+                    cmd.Parameters.AddWithValue("@auhtorId", authorId);
+                    cmd.Parameters.AddWithValue("@tagId", tagId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }
