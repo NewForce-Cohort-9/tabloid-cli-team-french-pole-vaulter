@@ -216,9 +216,9 @@ namespace TabloidCLI
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT a.id,
+                    cmd.CommandText = @"SELECT a.Id,
                                                a.Title,
-                                               a.Url,
+                                               a.Url
                                           FROM Blog a
                                                LEFT JOIN BlogTag at on a.Id = at.BlogId
                                                LEFT JOIN Tag t on t.Id = at.TagId
