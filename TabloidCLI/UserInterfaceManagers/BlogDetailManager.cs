@@ -138,10 +138,16 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-       /* private void ViewPosts()
+        private void ViewPosts()
         {
             List<Post> posts = _postRepository.GetByBlog(_blogId);
-        }*/
+            Console.WriteLine("\n\t\tPosts Associated With Selected Blog:\n");
+            foreach (Post post in posts)
+            {
+                Console.WriteLine($"{post}\n");
+            }
+            Console.WriteLine();
+        }
 
     }
 }
