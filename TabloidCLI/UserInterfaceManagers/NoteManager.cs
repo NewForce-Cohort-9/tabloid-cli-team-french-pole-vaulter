@@ -10,23 +10,24 @@ namespace TabloidCLI.UserInterfaceManagers
 {
     public class NoteManager : IUserInterfaceManager
     {
-        private IUserInterfaceManager _parentUI;
+        private readonly IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
         private NoteRepository _noteRepository;
         private int _postId;
-        //private string _connectionString;
+        private string _connectionString;
 
         public NoteManager(IUserInterfaceManager parentUI, string connectionString, int postId)
         {
             _parentUI = parentUI;
             _postRepository = new PostRepository(connectionString);
             _noteRepository = new NoteRepository(connectionString);
+            _connectionString = connectionString;
             _postId = postId;
         }
 
         public IUserInterfaceManager Execute()
         {
-            Post post = _postRepository.Get(_postId);
+            //Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Notes");
             Console.WriteLine(" 1) List Notes");
             Console.WriteLine(" 2) Add Note");
@@ -44,6 +45,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     Add();
                     return this;
                 case "3":
+                    Remove();
                     return this;
                 case "0":
                     return _parentUI;
@@ -58,9 +60,9 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Note> notes = _noteRepository.GetByPost(_postId);
             foreach (Note note in notes)
             {
-                Console.WriteLine($"{note.Title}");
+                Console.WriteLine($"Title: {note.Title}");
                 Console.WriteLine($"{note.Content}");
-                Console.WriteLine($"{note.CreateDateTime}");
+                Console.WriteLine($"Written: {note.CreateDateTime}");
             }
         }
 
@@ -96,7 +98,7 @@ namespace TabloidCLI.UserInterfaceManagers
             for (int i = 0; i < notes.Count; i++)
             {
                 Note note = notes[i];
-                Console.WriteLine($" {i + 1} {note.Title}");
+                Console.WriteLine($" {i + 1}) {note.Title}");
             }
             Console.Write("> ");
 

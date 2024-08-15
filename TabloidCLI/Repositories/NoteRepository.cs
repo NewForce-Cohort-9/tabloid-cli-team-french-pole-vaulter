@@ -24,10 +24,12 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"SELECT n.Id, n.Title, n.Content, n.CreateDateTime
+                    cmd.CommandText = @"SELECT n.Id, n.Title, n.Content, n.CreateDateTime, n.PostId
                                         FROM Note n 
-                                        JOIN Post p on p.Id = n.postId
+                                        JOIN Post p on p.Id = n.PostId
                                         WHERE p.Id = @postId";
+
+                    cmd.Parameters.AddWithValue("@postId", postId);
                     
                     List<Note> notes = new List<Note>();
 
@@ -88,9 +90,10 @@ namespace TabloidCLI.Repositories
             using (SqlConnection conn = Connection)
             {
                 conn.Open();
-                using (SqlCommand cmd = Connection.CreateCommand())
+                using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Note (Title, Content, CreateDateTime, PostId) VALUES (@title, @content, @createDateTime, @postid)";
+                    cmd.CommandText = @"INSERT INTO Note (Title, Content, CreateDateTime, PostId) 
+                                        VALUES (@title, @content, @createDateTime, @postid)";
                     cmd.Parameters.AddWithValue("@title", note.Title);
                     cmd.Parameters.AddWithValue("@content", note.Content);
                     cmd.Parameters.AddWithValue("@createDateTime", note.CreateDateTime);
