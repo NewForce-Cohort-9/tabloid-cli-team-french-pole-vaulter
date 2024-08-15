@@ -47,9 +47,10 @@ namespace TabloidCLI.UserInterfaceManagers
                     RemoveTag();
                     return this;
                 case "4":
-                    /*ViewPosts();*/
+                    ViewPosts();
                     return this;
                 case "0":
+                    Console.WriteLine();
                     return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
@@ -141,12 +142,13 @@ namespace TabloidCLI.UserInterfaceManagers
         private void ViewPosts()
         {
             List<Post> posts = _postRepository.GetByBlog(_blogId);
-            Console.WriteLine("\n\t\tPosts Associated With Selected Blog:\n");
+            Console.WriteLine("\n\t\t\t\tPosts Associated With Selected Blog:\n");
             foreach (Post post in posts)
             {
                 Console.WriteLine($"{post}\n");
             }
-            Console.WriteLine();
+            Console.WriteLine("\nPress any key to return to Details menu...");
+            Console.ReadKey();
         }
 
     }
