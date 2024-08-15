@@ -167,9 +167,8 @@ namespace TabloidCLI
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"SELECT a.id,
-                                               a.FirstName,
-                                               a.LastName,
-                                               a.Bio
+                                               a.Title,
+                                               a.Url,
                                           FROM Blog a
                                                LEFT JOIN BlogTag at on a.Id = at.BlogId
                                                LEFT JOIN Tag t on t.Id = at.TagId
@@ -184,9 +183,9 @@ namespace TabloidCLI
                         {
                             Id = reader.GetInt32(reader.GetOrdinal("Id")),
                             Title = reader.GetString(reader.GetOrdinal("Title")),
-                            URL = reader.GetString(reader.GetOrdinal("URL")),
+                            Url = reader.GetString(reader.GetOrdinal("Url")),
                         };
-                        results.Add(Blog);
+                        results.Add(blog);
                     }
 
                     reader.Close();
