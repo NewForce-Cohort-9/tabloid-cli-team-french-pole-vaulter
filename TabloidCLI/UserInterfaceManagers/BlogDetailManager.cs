@@ -42,7 +42,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     AddTag();
                     return this;
                 case "3":
-                    /*RemoveTag();*/
+                    RemoveTag();
                     return this;
                 case "4":
                     /*ViewPosts();*/
@@ -68,6 +68,9 @@ namespace TabloidCLI.UserInterfaceManagers
             {
                 Console.WriteLine($"Tags:\n {string.Join(", ", blog.Tags)}\n");
             }
+            Console.WriteLine("\nPress any key to return to Details menu...");
+            Console.ReadKey();
+
         }
 
         private void AddTag()
@@ -90,12 +93,49 @@ namespace TabloidCLI.UserInterfaceManagers
                 int choice = int.Parse(input);
                 Tag tag = tags[choice - 1];
                 _blogRepository.InsertTag(blog, tag);
+
+                Console.WriteLine($"\n\tTag: {tag.Name} successfully added to {blog.Title}.");
+                Console.WriteLine("\n\nPress any key to return to Details menu...");
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Invalid Selection. No tag added to this blog.");
             }
         }
+
+
+        private void RemoveTag()
+        {
+            Blog blog = _blogRepository.Get(_blogId);
+
+            Console.WriteLine($"\nWhich tag would you like to remove from {blog.Title}?\n");
+            List<Tag> tags = blog.Tags;
+
+            for (int i = 0; i < tags.Count; i++)
+            {
+                Tag tag = tags[i];
+                Console.WriteLine($" {i + 1}) {tag.Name}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                Tag tag = tags[choice - 1];
+                _blogRepository.DeleteTag(blog.Id, tag.Id);
+
+                Console.WriteLine($"\n\tTag: {tag.Name} successfully removed from {blog.Title}.");
+                Console.WriteLine("\n\nPress any key to return to Details menu...");
+                Console.ReadKey();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection. No tags will be removed from this blog.");
+            }
+        }
+
 
     }
 }
