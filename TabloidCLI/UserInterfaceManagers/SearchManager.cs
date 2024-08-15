@@ -62,20 +62,14 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
-<<<<<<< HEAD
         private void SearchBlogs()
-=======
         private void SearchPosts()
->>>>>>> main
         {
             Console.Write("Tag> ");
             string tagName = Console.ReadLine();
 
-<<<<<<< HEAD
             SearchResults<Blog> results = _tagRepository.SearchBlogs(tagName);
-=======
             SearchResults<Post> results = _tagRepository.SearchPosts(tagName);
->>>>>>> main
 
             if (results.NoResultsFound)
             {
