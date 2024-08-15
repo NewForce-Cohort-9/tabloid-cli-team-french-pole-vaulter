@@ -175,5 +175,25 @@ namespace TabloidCLI
                 }
             }
         }
+
+
+        public void InsertPostTag(int tagId, int postId)
+        {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO PostTag (PostId, TagId)
+                                                     VALUES (@postId, @tagId)";
+                    cmd.Parameters.AddWithValue("@postId", postId);
+                    cmd.Parameters.AddWithValue("@tagId", tagId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        
     }
 }
