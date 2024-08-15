@@ -54,6 +54,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     Remove();
                     return this;
                 case "0":
+                    Console.WriteLine();
                     return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
@@ -70,6 +71,8 @@ namespace TabloidCLI.UserInterfaceManagers
                 /*Console.WriteLine($"{blog.Title} -- {blog.Url}\n");*/ //Alternative output format
                 Console.WriteLine($"{blog}\n");
             }
+            Console.WriteLine("\nPress any key to return to Blog Manager menu...");
+            Console.ReadKey();
         }
 
 
