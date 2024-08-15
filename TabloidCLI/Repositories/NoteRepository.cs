@@ -11,6 +11,11 @@ namespace TabloidCLI.Repositories
     public class NoteRepository : DatabaseConnector, IRepository<Note>
     {
         public NoteRepository(string connectionString) : base(connectionString) { }
+
+        public List<Note> GetAll()
+        {
+            return null;
+        }
         public List<Note> GetByPost(int postId)
         {
             using (SqlConnection conn = Connection)
@@ -23,6 +28,7 @@ namespace TabloidCLI.Repositories
                                         FROM Note n 
                                         JOIN Post p on p.Id = n.postId
                                         WHERE p.Id = @postId";
+                    
                     List<Note> notes = new List<Note>();
 
                     SqlDataReader reader = cmd.ExecuteReader();

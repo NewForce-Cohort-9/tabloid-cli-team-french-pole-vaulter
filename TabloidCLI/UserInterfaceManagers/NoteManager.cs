@@ -10,11 +10,11 @@ namespace TabloidCLI.UserInterfaceManagers
 {
     public class NoteManager : IUserInterfaceManager
     {
-        private readonly IUserInterfaceManager _parentUI;
+        private IUserInterfaceManager _parentUI;
         private PostRepository _postRepository;
         private NoteRepository _noteRepository;
         private int _postId;
-        private string _connectionString;
+        //private string _connectionString;
 
         public NoteManager(IUserInterfaceManager parentUI, string connectionString, int postId)
         {
@@ -26,7 +26,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         public IUserInterfaceManager Execute()
         {
-            //Post post = _postRepository.Get(_postId);
+            Post post = _postRepository.Get(_postId);
             Console.WriteLine($"Notes");
             Console.WriteLine(" 1) List Notes");
             Console.WriteLine(" 2) Add Note");
@@ -55,7 +55,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-            List<Note> notes = _noteRepository.GetAll();
+            List<Note> notes = _noteRepository.GetByPost(_postId);
             foreach (Note note in notes)
             {
                 Console.WriteLine($"{note.Title}");
@@ -82,16 +82,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _noteRepository.Insert(note);
         }
 
-        private void Remove()
-        {
-            Note noteToDelete = Choose("Which note would you like to remove?");
-            if (noteToDelete != null)
-            {
-                _noteRepository.Delete(noteToDelete.Id);
-            }
-        }
-
-        public void Choose(string prompt = null)
+        private Note Choose(string prompt = null)
         {
             if (prompt == null)
             {
@@ -100,7 +91,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
             Console.WriteLine(prompt);
 
-            List<Note> notes = _noteRepository.GetAll();
+            List<Note> notes = _noteRepository.GetByPost(_postId);
 
             for (int i = 0; i < notes.Count; i++)
             {
@@ -121,5 +112,15 @@ namespace TabloidCLI.UserInterfaceManagers
                 return null;
             }
         }
+        private void Remove()
+        {
+            Note noteToDelete = Choose("Which note would you like to remove?");
+            if (noteToDelete != null)
+            {
+                _noteRepository.Delete(noteToDelete.Id);
+            }
+        }
+
+       
     }
 }
