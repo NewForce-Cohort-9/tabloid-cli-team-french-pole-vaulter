@@ -11,6 +11,7 @@ namespace TabloidCLI.UserInterfaceManagers
         private IUserInterfaceManager _parentUI;
         private BlogRepository _blogRepository;
         private TagRepository _tagRepository;
+        private PostRepository _postRepository;
         private int _blogId;
 
         public BlogDetailManager(IUserInterfaceManager parentUI, string connectionString, int blogId)
@@ -18,6 +19,7 @@ namespace TabloidCLI.UserInterfaceManagers
             _parentUI = parentUI;
             _blogRepository = new BlogRepository(connectionString);
             _tagRepository = new TagRepository(connectionString);
+            _postRepository = new PostRepository(connectionString);
             _blogId = blogId;
         }
 
@@ -45,9 +47,10 @@ namespace TabloidCLI.UserInterfaceManagers
                     RemoveTag();
                     return this;
                 case "4":
-                    /*ViewPosts();*/
+                    ViewPosts();
                     return this;
                 case "0":
+                    Console.WriteLine();
                     return _parentUI;
                 default:
                     Console.WriteLine("Invalid Selection");
@@ -136,6 +139,17 @@ namespace TabloidCLI.UserInterfaceManagers
             }
         }
 
+        private void ViewPosts()
+        {
+            List<Post> posts = _postRepository.GetByBlog(_blogId);
+            Console.WriteLine("\n\t\t\t\tPosts Associated With Selected Blog:\n");
+            foreach (Post post in posts)
+            {
+                Console.WriteLine($"{post}\n");
+            }
+            Console.WriteLine("\nPress any key to return to Details menu...");
+            Console.ReadKey();
+        }
 
     }
 }
